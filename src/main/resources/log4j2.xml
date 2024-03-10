@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{YYYY-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %replace{%msg}{(?&#60;=(firstName='|"firstName":")|(lastName='|"lastName":")|(customer_id='|"customer_id":")|(customer_email='|"customer_email":")|(customer_name='|"customer_name":")|(username=|"username":)|(Username=|"Username":)|(password=|"password":)|(Password=|"Password":)|(creditCardNumber=|"creditCardNumber":)).+?(?='|"|,)}{****}%n</Property>
+        <Property name="APP_LOG_ROOT">/opt/logs/bakong-log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT" follow="true">
+            <PatternLayout
+                pattern="${LOG_PATTERN}" />
+        </Console>
+        <RollingRandomAccessFile name="LogToRollingRandomAccessFile"
+            fileName="${APP_LOG_ROOT}/application.log"
+            filePattern="${APP_LOG_ROOT}/application.%d{dd-MMM}.log.zip"
+            ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="com.aeon" level="DEBUG" additivity="false">
+            <AppenderRef ref="LogToRollingRandomAccessFile" />
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger>
+
+        <AsyncLogger name="com.aeon" level="WARN" additivity="false">
+            <AppenderRef ref="LogToRollingRandomAccessFile" />
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger>
+
+        <AsyncLogger name="org.hibernate.SQL" level="DEBUG">
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger>
+
+        <!-- <AsyncLogger name="org.hibernate.type" level="TRACE">
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger> -->
+
+        <AsyncLogger name="org.springframework" level="ERROR" additivity="false">
+            <AppenderRef ref="LogToRollingRandomAccessFile" />
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger>
+
+        <AsyncLogger name="com.aeon" level="ERROR" additivity="false">
+            <AppenderRef ref="LogToRollingRandomAccessFile" />
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger>
+
+        <AsyncLogger name="com.aeon" level="INFO" additivity="false">
+            <AppenderRef ref="LogToRollingRandomAccessFile" />
+            <AppenderRef ref="LogToConsole" />
+        </AsyncLogger>
+
+        <AsyncRoot level="ERROR" additivity="false">
+            <AppenderRef ref="LogToRollingRandomAccessFile" />
+            <AppenderRef ref="LogToConsole" />
+        </AsyncRoot>
+    </Loggers>
+</Configuration>
