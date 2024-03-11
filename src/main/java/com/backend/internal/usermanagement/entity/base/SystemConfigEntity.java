@@ -3,7 +3,6 @@ package com.backend.internal.usermanagement.entity.base;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 

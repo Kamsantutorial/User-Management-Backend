@@ -2,7 +2,6 @@ package com.backend.internal.usermanagement.vo.user.response;
 
 import java.sql.Timestamp;
 import java.util.List;
-
 import lombok.Data;
 
 @Data
@@ -14,7 +13,7 @@ public class UserResponseVO {
 	private String phoneNumber;
 	private String email;
 	private int failedAttempt;
-	private boolean locked;
+	private Boolean locked;
 	private Timestamp lastLogin;
 	private BranchVO branch;
 	private List<RoleVO> roles;

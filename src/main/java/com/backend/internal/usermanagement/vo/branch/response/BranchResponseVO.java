@@ -9,7 +9,7 @@ public class BranchResponseVO {
 	private Long id;
 	private String branchName;
 	private String branchCode;
-	private boolean isActive;
+	private Boolean isActive;
 	private String createdBy;
 	private Timestamp createdAt;
 	private String updatedBy;

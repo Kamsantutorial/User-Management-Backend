@@ -14,11 +14,6 @@ import com.backend.internal.usermanagement.mapper.BranchMapper;
 import com.backend.internal.usermanagement.repository.base.BaseCriteria;
 import com.backend.internal.usermanagement.service.primary.BranchService;
 
-/**
- * 
- * @author SETC01
- *
- */
 @Service
 public class BranchServiceImpl implements BranchService {
 

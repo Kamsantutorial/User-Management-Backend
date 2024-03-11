@@ -11,7 +11,7 @@ public class BaseDTO implements Serializable {
     private Date createdAt = new Date();
     private String updatedBy;
     private Date updatedAt;
-    private boolean isDeleted;
+    private Boolean isDeleted = false;
     private String deletedBy;
     private Date deletedAt;
 }

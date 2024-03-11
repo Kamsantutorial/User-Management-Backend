@@ -33,9 +33,9 @@
             <AppenderRef ref="LogToConsole" />
         </AsyncLogger>
 
-        <AsyncLogger name="org.hibernate.SQL" level="DEBUG">
+        <!-- <AsyncLogger name="org.hibernate.SQL" level="DEBUG">
             <AppenderRef ref="LogToConsole" />
-        </AsyncLogger>
+        </AsyncLogger> -->
 
         <!-- <AsyncLogger name="org.hibernate.type" level="TRACE">
             <AppenderRef ref="LogToConsole" />

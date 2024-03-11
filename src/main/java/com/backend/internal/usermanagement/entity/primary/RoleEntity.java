@@ -35,13 +35,6 @@ public class RoleEntity extends BaseEntity<Long> {
 	@BatchSize(size = 10)
 	private Set<PermissionEntity> permissions;
 
-	public RoleEntity(String roleName, Timestamp createdAt, String createdBy) {
-		super();
-		this.roleName = roleName;
-		this.setCreatedAt(createdAt);
-		this.setCreatedBy(createdBy);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);

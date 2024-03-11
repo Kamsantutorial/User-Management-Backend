@@ -16,6 +16,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.backend.internal.usermanagement.repository.base.CustomAuditLog;
 import com.backend.internal.usermanagement.repository.base.impl.BaseRepositoryFactoryBean;
 
 @Configuration
@@ -37,6 +39,7 @@ public class PrimaryDatabaseConfig {
 	public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(EntityManagerFactoryBuilder builder,
 			@Qualifier("primaryDataSource") DataSource primaryDataSource) {
 		Map<String, Object> maps = new HashMap<>();
+		maps.put("hibernate.ejb.interceptor", new CustomAuditLog());
 		return builder
 				.dataSource(primaryDataSource)
 				.packages("com.backend.internal.usermanagement.entity.primary", "com.backend.internal.usermanagement.entity.base")

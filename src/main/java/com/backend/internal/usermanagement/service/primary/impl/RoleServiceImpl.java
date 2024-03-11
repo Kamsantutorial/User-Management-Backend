@@ -9,15 +9,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import com.backend.internal.usermanagement.repository.primary.RoleRepository;
 import com.backend.internal.usermanagement.common.enums.ErrorCode;
-import com.backend.internal.usermanagement.common.enums.StatusType;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.role.RoleDTO;
-import com.backend.internal.usermanagement.dto.user.UserDTO;
 import com.backend.internal.usermanagement.entity.primary.RoleEntity;
-import com.backend.internal.usermanagement.entity.primary.UserEntity;
 import com.backend.internal.usermanagement.exception.ServerException;
 import com.backend.internal.usermanagement.mapper.RoleMapper;
-import com.backend.internal.usermanagement.mapper.UserMapper;
 import com.backend.internal.usermanagement.repository.base.BaseCriteria;
 import com.backend.internal.usermanagement.service.primary.RoleService;
 

@@ -45,42 +45,24 @@ public class UserEntity extends BaseEntity<Long> {
 	private String email;
 
 	@Column(name = "failed_attempt")
-	private int failedAttempt;
+	private Integer failedAttempt;
 
 	@Column(name = "locked")
-	private boolean locked;
+	private Boolean locked;
 
 	@Column(name = "last_login")
 	private Timestamp lastLogin;
 
 	private String password;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "branch_id", referencedColumnName = "id", insertable = false, updatable = false)
-	private BranchEntity branch;
+	// @ManyToOne(fetch = FetchType.EAGER)
+	// @JoinColumn(name = "branch_id", referencedColumnName = "id", insertable = false, updatable = false)
+	// private BranchEntity branch;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	@WhereJoinTable(clause = "is_active = true ")
 	private Set<RoleEntity> roles;
-
-	public UserEntity(Long branchId, String username, String fullname, String staffId, String phoneNumber, String email,
-			int failedAttempt, boolean locked, boolean isActive, Timestamp createdAt, String createdBy,
-			boolean isDeleted) {
-		super();
-		this.branchId = branchId;
-		this.username = username;
-		this.fullname = fullname;
-		this.staffId = staffId;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.failedAttempt = failedAttempt;
-		this.locked = locked;
-		this.setIsActive(isActive);
-		this.setCreatedAt(createdAt);
-		this.setCreatedBy(createdBy);
-		this.setIsDeleted(isDeleted);
-	}
 
 	@Override
 	public boolean equals(Object obj) {

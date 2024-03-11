@@ -79,6 +79,7 @@ public class CustomTokenStore implements TokenStore {
         cat.setUserId(authentication.isClientOnly() ? null : user.getId());
         cat.setClientId(authentication.getOAuth2Request().getClientId());
         cat.setAuthentication(authentication);
+        cat.setExpiredAt(accessToken.getExpiration());
         cat.setRefreshToken(extractTokenKey(refreshToken));
 
         cbAccessTokenRepository.save(cat);

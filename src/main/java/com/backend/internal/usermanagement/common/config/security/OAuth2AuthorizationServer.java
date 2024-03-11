@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import com.backend.internal.usermanagement.repository.primary.AccessTokenRepository;
@@ -70,6 +73,7 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
         clients.jdbc(dataSource).passwordEncoder(passwordEncoder());
     }
 
+    @Primary
     @Bean
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
@@ -84,10 +88,15 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
         return new CustomAuthenticationManager(userService, passwordEncoder());
     }
 
+    @Bean
+    public TokenEnhancer tokenEnhancer(MenuService menuService) {
+        return new CustomTokenEnhancer(menuService);
+    }  
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(menuService)));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(menuService)));
         endpoints
                 .tokenEnhancer(tokenEnhancerChain)
                 .tokenStore(tokenStore())

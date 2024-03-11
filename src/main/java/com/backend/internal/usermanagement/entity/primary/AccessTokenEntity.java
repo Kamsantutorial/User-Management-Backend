@@ -1,5 +1,7 @@
 package com.backend.internal.usermanagement.entity.primary;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,6 +36,8 @@ public class AccessTokenEntity extends BaseEntity<Long> {
     private String refreshToken;
     @Column(name = "user_id")
     private Long userId;
+    @Column(name = "expired_at")
+    private Date expiredAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)

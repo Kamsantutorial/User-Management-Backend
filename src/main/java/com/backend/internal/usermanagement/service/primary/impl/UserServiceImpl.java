@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import com.backend.internal.usermanagement.common.enums.ErrorCode;
-import com.backend.internal.usermanagement.common.enums.StatusType;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.user.UserDTO;
 import com.backend.internal.usermanagement.entity.primary.UserEntity;

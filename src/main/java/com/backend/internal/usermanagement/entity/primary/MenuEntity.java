@@ -69,29 +69,6 @@ public class MenuEntity extends BaseEntity<Long> {
 	@Transient
 	private List<MenuEntity> child;
 
-	public MenuEntity(String menuName, String url, String icon, Float orderBy,
-			Long parentId, String createdBy,
-			Timestamp createdAt) {
-		super();
-		this.menuName = menuName;
-		this.url = url;
-		this.icon = icon;
-		this.orderBy = orderBy;
-		this.parentId = parentId;
-		this.setCreatedBy(createdBy);
-		this.setCreatedAt(createdAt);
-	}
-
-	public MenuEntity(String menuName, String url, String icon, Long parentId,
-			Boolean isActive) {
-		super();
-		this.menuName = menuName;
-		this.url = url;
-		this.icon = icon;
-		this.parentId = parentId;
-		this.setIsActive(isActive);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);

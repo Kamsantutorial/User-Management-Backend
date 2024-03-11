@@ -17,17 +17,6 @@ public class UserDetailDTO implements UserDetails {
 	private String email;
 	private List<GrantedAuthority> roles;
 
-	public UserDetailDTO(Long id, String username, String fullname, String phoneNumber, String email,
-			List<GrantedAuthority> roles) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.fullname = fullname;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.roles = roles;
-	}
-
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub

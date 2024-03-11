@@ -40,7 +40,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 
             UserLoginResponseVO userResponse = new UserLoginResponseVO();
             UserMapper.INSTANCE.copyEntityToLoginResponseVo(user, userResponse);
-            additionalInfo.put("user", userResponse);
+            additionalInfo.put("users", userResponse);
 
             List<MenuDTO> menus = menuService.findAllByUser(user);
             List<MenuLoginResponseVO> menuResponse = new ArrayList<>();

@@ -24,17 +24,6 @@ public class UserRoleEntity extends BaseEntity<Long> {
 	@Column(name = "role_id")
 	private Long roleId;
 
-	public UserRoleEntity(Long userId, Long roleId, String createdBy, Timestamp createdAt,
-			boolean isActive, boolean isDeleted) {
-		super();
-		this.userId = userId;
-		this.roleId = roleId;
-		this.setCreatedBy(createdBy);
-		this.setCreatedAt(createdAt);
-		this.setIsActive(isActive);
-		this.setIsDeleted(isDeleted);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);

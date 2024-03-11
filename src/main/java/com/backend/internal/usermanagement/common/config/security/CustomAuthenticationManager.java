@@ -42,7 +42,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             throw new BadCredentialsException("Incorrect username or password!");
         }
         
-        if (user.isLocked()) {
+        if (user.getLocked()) {
             throw new BadCredentialsException("User is Locked");
         }
         
@@ -50,32 +50,36 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             throw new BadCredentialsException("User is Inactive");
         }
 
-        if (user.getRoles().stream()
-                .anyMatch(x -> x.getRoleName().equalsIgnoreCase("SUPER-ADMIN"))
-                && Objects.nonNull(user.getPassword())) {
-
-            List<GrantedAuthority> roles = user.getRoles().stream()
-                    .map(x -> new SimpleGrantedAuthority(x.getRoleName())).collect(Collectors.toList());
-
-            if (!passwordEncoder.matches(password, user.getPassword())) {
-                throw new BadCredentialsException("Incorrect username or password!");
-            }
-
-            logger.info("authenticated roles {}", roles);
-            return new UsernamePasswordAuthenticationToken(user, null, roles);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Incorrect username or password!");
         }
+
+        // if (user.getRoles().stream()
+        //         .anyMatch(x -> x.getRoleName().equalsIgnoreCase("SUPER-ADMIN"))
+        //         && Objects.nonNull(user.getPassword())) {
+
+        //     List<GrantedAuthority> roles = user.getRoles().stream()
+        //             .map(x -> new SimpleGrantedAuthority(x.getRoleName())).collect(Collectors.toList());
+
+        //     if (!passwordEncoder.matches(password, user.getPassword())) {
+        //         throw new BadCredentialsException("Incorrect username or password!");
+        //     }
+
+        //     logger.info("authenticated roles {}", roles);
+        //     return new UsernamePasswordAuthenticationToken(user, null, roles);
+        // }
 
         List<GrantedAuthority> roles = user.getRoles().stream()
                 .map(x -> new SimpleGrantedAuthority(x.getRoleName())).collect(Collectors.toList());
 
-		user.setFailedAttempt(0);
-        UserDTO userDTO = new UserDTO();
-        UserMapper.INSTANCE.copyEntityToDto(user, userDTO);
-		try {
-            userService.create(userDTO);
-        } catch (ServerException e) {
-            e.printStackTrace();
-        }
+		// user.setFailedAttempt(0);
+        // UserDTO userDTO = new UserDTO();
+        // UserMapper.INSTANCE.copyEntityToDto(user, userDTO);
+		// try {
+        //     userService.create(userDTO);
+        // } catch (ServerException e) {
+        //     e.printStackTrace();
+        // }
 
         logger.info("authenticated roles {}", roles);
         return new UsernamePasswordAuthenticationToken(user, null, roles);
