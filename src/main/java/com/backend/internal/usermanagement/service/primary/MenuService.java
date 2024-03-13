@@ -6,25 +6,20 @@ import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.menu.MenuDTO;
 import com.backend.internal.usermanagement.entity.primary.MenuEntity;
 import com.backend.internal.usermanagement.entity.primary.UserEntity;
+import com.backend.internal.usermanagement.service.base.BaseService;
 
 
-public interface MenuService {
+public interface MenuService extends BaseService<MenuDTO, RequestPageableDTO> {
 
 	MenuEntity findById(Long id);
 
-	List<MenuEntity> getMenus(int length, int start);
-
 	int countAllMenus();
 
-	List<MenuEntity> getParentMenus();
+	List<MenuDTO> getParentMenus();
 
 	boolean save(MenuEntity menu);
 
-	List<MenuEntity> getAllMenus();
-
-	int existByMenuUrl(String url);
-
-	MenuEntity existByMenuName(String menuName, int isDeleted);
+	List<MenuDTO> getAllMenus();
 
 	List<MenuEntity> findAllByParentId(Long parentId, int isDeleted);
 

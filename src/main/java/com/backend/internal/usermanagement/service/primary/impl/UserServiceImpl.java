@@ -11,11 +11,15 @@ import org.springframework.stereotype.Service;
 import com.backend.internal.usermanagement.common.enums.ErrorCode;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.user.UserDTO;
+import com.backend.internal.usermanagement.entity.primary.RoleEntity;
 import com.backend.internal.usermanagement.entity.primary.UserEntity;
+import com.backend.internal.usermanagement.entity.primary.UserRoleEntity;
 import com.backend.internal.usermanagement.exception.ServerException;
 import com.backend.internal.usermanagement.mapper.UserMapper;
 import com.backend.internal.usermanagement.repository.base.BaseCriteria;
+import com.backend.internal.usermanagement.repository.primary.RoleRepository;
 import com.backend.internal.usermanagement.repository.primary.UserRepository;
+import com.backend.internal.usermanagement.repository.primary.UserRoleRepository;
 import com.backend.internal.usermanagement.service.primary.UserService;
 
 @Service
@@ -23,6 +27,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Override
     public UserEntity findByUsername(String username) {
@@ -36,9 +44,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(UserDTO dto) throws ServerException {
+
+        UserEntity exist = this.findByUsername(dto.getUsername());
+
+        if (Objects.nonNull(exist)) {
+            throw new ServerException(ErrorCode.E009.name(), ErrorCode.E009.getDesc());
+        }
         UserEntity userEntity = new UserEntity();
         UserMapper.INSTANCE.copyDtoToEntity(dto, userEntity);
         userRepository.save(userEntity);
+
+        BaseCriteria<RoleRepository> criteria = new BaseCriteria<>(roleRepository);
+        criteria.in("id", dto.getRoleIds());
+        List<RoleEntity> roleEntities = roleRepository.findAllWithCriteria(criteria);
+
+        List<UserRoleEntity> userRoles = new ArrayList<>();
+        for(RoleEntity roleEntity: roleEntities) {
+            UserRoleEntity userRoleEntity = new UserRoleEntity();
+            userRoleEntity.setRoleId(roleEntity.getId());
+            userRoleEntity.setUserId(userEntity.getId());
+            userRoles.add(userRoleEntity);
+        }
+        userRoleRepository.saveAll(userRoles);
         UserMapper.INSTANCE.copyEntityToDto(userEntity, dto);
     }
 
@@ -52,6 +79,26 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity();
         UserMapper.INSTANCE.copyDtoToEntity(dto, userEntity);
         userRepository.save(userEntity);
+
+        //REMOVE OLD ROLE
+        BaseCriteria<UserRoleRepository> existRoleCriteria = new BaseCriteria<>(userRoleRepository);
+        existRoleCriteria.in("userId", userEntity.getId());
+        List<UserRoleEntity> userRoleExist = userRoleRepository.findAllWithCriteria(existRoleCriteria);
+        userRoleRepository.deleteAll(userRoleExist);
+
+        BaseCriteria<RoleRepository> criteria = new BaseCriteria<>(roleRepository);
+        criteria.in("id", dto.getRoleIds());
+        List<RoleEntity> roleEntities = roleRepository.findAllWithCriteria(criteria);
+
+        //ADD NEW ROLE
+        List<UserRoleEntity> userRoles = new ArrayList<>();
+        for(RoleEntity roleEntity: roleEntities) {
+            UserRoleEntity userRoleEntity = new UserRoleEntity();
+            userRoleEntity.setRoleId(roleEntity.getId());
+            userRoleEntity.setUserId(userEntity.getId());
+            userRoles.add(userRoleEntity);
+        }
+        userRoleRepository.saveAll(userRoles);
         UserMapper.INSTANCE.copyEntityToDto(userEntity, dto);
     }
 
@@ -64,6 +111,7 @@ public class UserServiceImpl implements UserService {
         }
         UserEntity userEntity = new UserEntity();
         UserMapper.INSTANCE.copyDtoToEntity(userDTO, userEntity);
+        userEntity.setIsActive(false);
         userEntity.setIsDeleted(true);
         userRepository.save(userEntity);
     }

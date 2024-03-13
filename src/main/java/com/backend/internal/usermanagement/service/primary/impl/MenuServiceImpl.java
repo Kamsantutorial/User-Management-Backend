@@ -15,11 +15,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+
+import com.backend.internal.usermanagement.common.enums.ErrorCode;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.menu.MenuDTO;
 import com.backend.internal.usermanagement.entity.primary.MenuEntity;
 import com.backend.internal.usermanagement.entity.primary.RoleEntity;
 import com.backend.internal.usermanagement.entity.primary.UserEntity;
+import com.backend.internal.usermanagement.exception.ServerException;
 import com.backend.internal.usermanagement.mapper.MenuMapper;
 import com.backend.internal.usermanagement.repository.base.BaseCriteria;
 import com.backend.internal.usermanagement.repository.primary.MenuRepository;
@@ -40,18 +43,18 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public List<MenuEntity> getMenus(int length, int start) {
-		return menuRepository.getAllMenus(length, start);
-	}
-
-	@Override
 	public int countAllMenus() {
 		return menuRepository.countAllMenus();
 	}
 
 	@Override
-	public List<MenuEntity> getParentMenus() {
-		return menuRepository.getAllParentMenu();
+	public List<MenuDTO> getParentMenus() {
+		BaseCriteria<MenuRepository> criteria = new BaseCriteria<>(menuRepository);
+		criteria.isNull("parentId");
+		List<MenuEntity> list = menuRepository.findAllWithCriteria(criteria);
+		List<MenuDTO> dtos = new ArrayList<>();
+		MenuMapper.INSTANCE.copyListEntityToListDto(list, dtos);
+		return dtos;
 	}
 
 	@Override
@@ -66,18 +69,12 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public List<MenuEntity> getAllMenus() {
-		return menuRepository.getAllMenus();
-	}
-
-	@Override
-	public int existByMenuUrl(String url) {
-		return menuRepository.existsByMenuUrl(url.toLowerCase());
-	}
-
-	@Override
-	public MenuEntity existByMenuName(String menuName, int isDeleted) {
-		return menuRepository.existsByMenuName(menuName.toLowerCase(), isDeleted);
+	public List<MenuDTO> getAllMenus() {
+		BaseCriteria<MenuRepository> criteria = new BaseCriteria<>(menuRepository);
+		List<MenuEntity> list = menuRepository.findAllWithCriteria(criteria);
+		List<MenuDTO> dtos = new ArrayList<>();
+		MenuMapper.INSTANCE.copyListEntityToListDto(list, dtos);
+		return dtos;
 	}
 
 	@Override
@@ -90,7 +87,7 @@ public class MenuServiceImpl implements MenuService {
 		BaseCriteria<MenuRepository> criteria = new BaseCriteria<>(menuRepository);
 		criteria.or(criteria.or(criteria.like("menuName", menuDTO.getSearchKeyword()),
 				criteria.equal("id", menuDTO.getSearchKeyword())));
-		criteria.setDistinct(true);
+		//criteria.setDistinct(true);
 		criteria.size(pageableDTO.getSize());
 		criteria.setPage(pageableDTO.getPageOffset());
 
@@ -141,7 +138,7 @@ public class MenuServiceImpl implements MenuService {
 		criteria.join("permissions", JoinType.LEFT);
 		criteria.join("parent", JoinType.LEFT);
 		criteria.in("permissions.id", permissionIds);
-		criteria.orderBy("id", Direction.ASC);
+		//criteria.orderBy("id", Direction.ASC);
 
 		criteria.setDistinct(true);
 		List<MenuEntity> listEntity = menuRepository.findAllWithCriteria(criteria);
@@ -178,5 +175,49 @@ public class MenuServiceImpl implements MenuService {
 				removeIfNotExist(permissionIds, menu.getChildren());
 			}
 		});
+	}
+
+	@Override
+	public void create(MenuDTO dto) throws ServerException {
+		MenuEntity menuEntity = new MenuEntity();
+		MenuMapper.INSTANCE.copyDtoToEntity(dto, menuEntity);
+		menuRepository.save(menuEntity);
+		MenuMapper.INSTANCE.copyEntityToDto(menuEntity, dto);
+	}
+
+	@Override
+	public void update(MenuDTO dto, Long id) throws ServerException {
+		MenuEntity menuEntity = this.findEntity(id);
+		if (Objects.isNull(menuEntity)) {
+			throw new ServerException(ErrorCode.E002.name(), ErrorCode.E002.getDesc());
+		}
+		MenuMapper.INSTANCE.copyDtoToEntity(dto, menuEntity);
+		menuRepository.save(menuEntity);
+		MenuMapper.INSTANCE.copyEntityToDto(menuEntity, dto);
+	}
+
+	@Override
+	public void delete(Long id) throws ServerException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'delete'");
+	}
+
+	public MenuEntity findEntity(Long id) throws ServerException {
+		BaseCriteria<MenuRepository> criteria = new BaseCriteria<>(menuRepository);
+		criteria.equal("id", id);
+		MenuEntity menuEntity = menuRepository.findOneWithCriteria(criteria).orElse(null);
+		return menuEntity;
+	}
+
+	@Override
+	public MenuDTO findOne(Long id) throws ServerException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'findOne'");
+	}
+
+	@Override
+	public List<MenuDTO> findAll() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'findAll'");
 	}
 }

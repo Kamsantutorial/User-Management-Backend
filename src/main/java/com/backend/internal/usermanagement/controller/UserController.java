@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import com.backend.internal.usermanagement.dto.user.UserDTO;
 import com.backend.internal.usermanagement.exception.ServerException;
 import com.backend.internal.usermanagement.mapper.UserMapper;
 import com.backend.internal.usermanagement.service.primary.AccessTokenService;
-import com.backend.internal.usermanagement.service.primary.BranchService;
 import com.backend.internal.usermanagement.service.primary.RoleService;
 import com.backend.internal.usermanagement.service.primary.UserRoleService;
 import com.backend.internal.usermanagement.service.primary.UserService;
@@ -25,6 +25,7 @@ import com.backend.internal.usermanagement.vo.BaseResponse;
 import com.backend.internal.usermanagement.vo.ResponsePageableVO;
 import com.backend.internal.usermanagement.vo.user.request.UserCreateRequestVO;
 import com.backend.internal.usermanagement.vo.user.request.UserRequestPageVO;
+import com.backend.internal.usermanagement.vo.user.request.UserUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.user.response.UserResponseVO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -39,8 +40,6 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private RoleService roleService;
-	@Autowired
-	private BranchService branchService;
 	@Autowired
 	private UserRoleService userRoleService;
 
@@ -76,6 +75,27 @@ public class UserController {
 		UserResponseVO response = new UserResponseVO();
 		return new BaseResponse<UserResponseVO>()
 				.body(response)
+				.success();
+	}
+
+	@PostMapping("/update/{id}")
+	public BaseResponse<UserResponseVO> update(@PathVariable Long id, @RequestBody UserUpdateRequestVO requestVO)
+			throws ServerException {
+		UserDTO userDTO = new UserDTO();
+		UserMapper.INSTANCE.copyUpdateRequestVoToDto(requestVO, userDTO);
+		userService.update(userDTO, id);
+		UserResponseVO response = new UserResponseVO();
+		return new BaseResponse<UserResponseVO>()
+				.body(response)
+				.success();
+	}
+
+	@PostMapping("/delete/{id}")
+	public BaseResponse<Void> delete(@PathVariable Long id)
+			throws ServerException {
+		userService.delete(id);
+		return new BaseResponse<Void>()
+				.body(null)
 				.success();
 	}
 

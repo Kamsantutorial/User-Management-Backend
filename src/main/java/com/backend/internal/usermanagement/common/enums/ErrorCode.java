@@ -16,7 +16,7 @@ public enum ErrorCode {
     E006("E006", "Third Party is mandatory"),
     E007("E007", "Token id invalid"),
     E008("E008", "Error Occur"),
-    E009("E009", "KHQR Generate Failed");
+    E009("E009", "Username already exist!");
 
     private String code;
     private String desc;

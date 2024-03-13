@@ -108,12 +108,12 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         Root<T> rootCount = cq.from(entityClass);
         this.countOrSumQueryJoins(rootCount);
         if (criteria.isDistinct()) {
-            cq.select(this.criteriaBuilder.countDistinct(rootCount)).where(predicates)
-                    .orderBy(this.criteriaQuery.getOrderList());
+            cq.select(this.criteriaBuilder.countDistinct(rootCount)).where(predicates);
+            //.orderBy(this.criteriaQuery.getOrderList());
             // .groupBy(this.criteriaQuery.getGroupList());
         } else {
-            cq.select(this.criteriaBuilder.count(rootCount)).where(predicates)
-                    .orderBy(this.criteriaQuery.getOrderList());
+            cq.select(this.criteriaBuilder.count(rootCount)).where(predicates);
+            //.orderBy(this.criteriaQuery.getOrderList());
             // .groupBy(this.criteriaQuery.getGroupList());
         }
         long count = entityManager.createQuery(cq).getSingleResult();

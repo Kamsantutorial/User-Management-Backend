@@ -3,7 +3,6 @@ package com.backend.internal.usermanagement.dto.user;
 import java.sql.Timestamp;
 import java.util.List;
 import com.backend.internal.usermanagement.dto.BaseDTO;
-import com.backend.internal.usermanagement.dto.branch.BranchDTO;
 import com.backend.internal.usermanagement.dto.role.RoleDTO;
 import lombok.Data;
 
@@ -20,7 +19,6 @@ public class UserDTO extends BaseDTO {
 	private int failedAttempt;
 	private Boolean locked;
 	private Timestamp lastLogin;
-	private BranchDTO branch;
 	private List<RoleDTO> roles;
 	private Long branchId;
 	private String searchKeyword;

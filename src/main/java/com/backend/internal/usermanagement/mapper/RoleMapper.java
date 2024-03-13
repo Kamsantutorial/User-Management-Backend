@@ -9,7 +9,9 @@ import org.mapstruct.factory.Mappers;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.role.RoleDTO;
 import com.backend.internal.usermanagement.entity.primary.RoleEntity;
+import com.backend.internal.usermanagement.vo.role.request.RoleCreateRequestVO;
 import com.backend.internal.usermanagement.vo.role.request.RoleRequestPageVO;
+import com.backend.internal.usermanagement.vo.role.request.RoleUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.role.response.RoleResponseVO;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -20,6 +22,10 @@ public interface RoleMapper {
     void copyDtoToEntity(RoleDTO dto, @MappingTarget RoleEntity entity);
 
     void copyEntityToDto(RoleEntity entity, @MappingTarget RoleDTO dto);
+
+    void copyCreateRequestVoToDto(RoleCreateRequestVO vo, @MappingTarget RoleDTO dto);
+
+    void copyUpdateRequestVoToDto(RoleUpdateRequestVO vo, @MappingTarget RoleDTO dto);
 
     void copyListEntityToListDto(List<RoleEntity> listEntity, @MappingTarget List<RoleDTO> listDTO);
 

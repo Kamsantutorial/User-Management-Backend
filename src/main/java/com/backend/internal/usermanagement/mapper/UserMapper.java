@@ -12,6 +12,7 @@ import com.backend.internal.usermanagement.dto.user.UserDTO;
 import com.backend.internal.usermanagement.entity.primary.UserEntity;
 import com.backend.internal.usermanagement.vo.user.request.UserCreateRequestVO;
 import com.backend.internal.usermanagement.vo.user.request.UserRequestPageVO;
+import com.backend.internal.usermanagement.vo.user.request.UserUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.user.response.UserLoginResponseVO;
 import com.backend.internal.usermanagement.vo.user.response.UserResponseVO;
 
@@ -42,6 +43,8 @@ public interface UserMapper {
     void copyEntityToLoginResponseVo(UserEntity user, @MappingTarget UserLoginResponseVO responseVO);
 
     void copyCreateRequestVoToDto(UserCreateRequestVO vo, @MappingTarget UserDTO dto);
+
+    void copyUpdateRequestVoToDto(UserUpdateRequestVO vo, @MappingTarget UserDTO dto);
 
     void copyDtoToResponseVo(UserDTO dto, @MappingTarget UserResponseVO vo);
 }

@@ -12,7 +12,9 @@ import org.mapstruct.factory.Mappers;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.menu.MenuDTO;
 import com.backend.internal.usermanagement.entity.primary.MenuEntity;
+import com.backend.internal.usermanagement.vo.menu.request.MenuCreateRequestVO;
 import com.backend.internal.usermanagement.vo.menu.request.MenuRequestPageVO;
+import com.backend.internal.usermanagement.vo.menu.request.MenuUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.menu.response.MenuLoginResponseVO;
 import com.backend.internal.usermanagement.vo.menu.response.MenuResponseVO;
 import com.backend.internal.usermanagement.vo.permission.response.MenuTypeResponseVO;
@@ -21,6 +23,10 @@ import com.backend.internal.usermanagement.vo.permission.response.MenuTypeRespon
 public interface MenuMapper {
 
     MenuMapper INSTANCE = Mappers.getMapper(MenuMapper.class);
+
+    void copyEntityToDto(MenuEntity entity, @MappingTarget MenuDTO dto);
+
+    void copyDtoToEntity(MenuDTO dto, @MappingTarget MenuEntity entity);
 
     void copyListEntityToListDto(List<MenuEntity> listEntity, @MappingTarget List<MenuDTO> listMenu);
 
@@ -35,6 +41,8 @@ public interface MenuMapper {
 
     void copyListEntityToResponseVo(List<MenuEntity> menus, @MappingTarget List<MenuResponseVO> responseVOs);
 
+    void copyListDtoToResponseVo(List<MenuDTO> menus, @MappingTarget List<MenuResponseVO> responseVOs);
+
     void copyListDtoToLoginResponseVo(List<MenuDTO> menus, @MappingTarget List<MenuLoginResponseVO> responseVOs);
 
     @Mapping(source = "url", target = "path")
@@ -44,5 +52,9 @@ public interface MenuMapper {
     void copyEntityToResponseVo(MenuEntity menu, @MappingTarget MenuResponseVO responseVO);
 
     void copyListEntityToResponseTypeVo(List<MenuDTO> menus, @MappingTarget List<MenuTypeResponseVO> responseVOs);
+
+    void copyCreateRequestVoToDto(MenuCreateRequestVO vo, @MappingTarget MenuDTO dto);
+
+    void copyUpdateRequestVoToDto(MenuUpdateRequestVO vo, @MappingTarget MenuDTO dto);
 
 }

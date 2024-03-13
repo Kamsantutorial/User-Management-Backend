@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.backend.internal.usermanagement.vo.BaseResponse;
 import com.backend.internal.usermanagement.vo.ResponsePageableVO;
 import com.backend.internal.usermanagement.vo.permission.request.PermissionCreateRequestVO;
 import com.backend.internal.usermanagement.vo.permission.request.PermissionRequestPageVO;
+import com.backend.internal.usermanagement.vo.permission.request.PermissionUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.permission.response.PermissionResponseVO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -64,6 +66,18 @@ public class PermissionController {
 		PermissionDTO permissionDTO = new PermissionDTO();
 		PermissionMapper.INSTANCE.copyCreateRequestVoToDto(createRequestVO, permissionDTO);
 		permissionService.create(permissionDTO);
+		PermissionResponseVO response = new PermissionResponseVO();
+		return new BaseResponse<PermissionResponseVO>()
+				.body(response)
+				.success();
+	}
+
+	@PostMapping("/update/{id}")
+	public BaseResponse<PermissionResponseVO> update(@PathVariable Long id, @RequestBody PermissionUpdateRequestVO requestVO)
+			throws ServerException {
+		PermissionDTO permissionDTO = new PermissionDTO();
+		PermissionMapper.INSTANCE.copyUpdateRequestVoToDto(requestVO, permissionDTO);
+		permissionService.update(permissionDTO, id);
 		PermissionResponseVO response = new PermissionResponseVO();
 		return new BaseResponse<PermissionResponseVO>()
 				.body(response)

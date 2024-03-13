@@ -11,5 +11,6 @@ public class RoleDTO extends BaseDTO {
 	private Long id;
 	private String roleName;
 	private List<PermissionDTO> permissions;
+	private List<Long> permissionIds;
 	private String searchKeyword;
 }

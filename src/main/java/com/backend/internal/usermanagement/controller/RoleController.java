@@ -8,13 +8,17 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
 import com.backend.internal.usermanagement.dto.role.RoleDTO;
-import com.backend.internal.usermanagement.entity.primary.RoleEntity;
+import com.backend.internal.usermanagement.dto.user.UserDTO;
 import com.backend.internal.usermanagement.exception.ServerException;
 import com.backend.internal.usermanagement.mapper.RoleMapper;
+import com.backend.internal.usermanagement.mapper.UserMapper;
 import com.backend.internal.usermanagement.repository.primary.RolePermissionRepository;
 import com.backend.internal.usermanagement.service.primary.AccessTokenService;
 import com.backend.internal.usermanagement.service.primary.RolePermissionService;
@@ -22,8 +26,13 @@ import com.backend.internal.usermanagement.service.primary.RoleService;
 import com.backend.internal.usermanagement.service.primary.UserRoleService;
 import com.backend.internal.usermanagement.vo.BaseResponse;
 import com.backend.internal.usermanagement.vo.ResponsePageableVO;
+import com.backend.internal.usermanagement.vo.role.request.RoleCreateRequestVO;
 import com.backend.internal.usermanagement.vo.role.request.RoleRequestPageVO;
+import com.backend.internal.usermanagement.vo.role.request.RoleUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.role.response.RoleResponseVO;
+import com.backend.internal.usermanagement.vo.user.request.UserCreateRequestVO;
+import com.backend.internal.usermanagement.vo.user.response.UserResponseVO;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Role Management", description = "Expose Role Rest API")
@@ -65,6 +74,31 @@ public class RoleController {
 				.body(response)
 				.success();
 
+	}
+
+	@PostMapping("/create")
+	public BaseResponse<RoleResponseVO> create(@RequestBody RoleCreateRequestVO createRequestVO)
+			throws ServerException {
+		RoleDTO roleDTO = new RoleDTO();
+		RoleMapper.INSTANCE.copyCreateRequestVoToDto(createRequestVO, roleDTO);
+		roleService.create(roleDTO);
+		RoleResponseVO response = new RoleResponseVO();
+		return new BaseResponse<RoleResponseVO>()
+				.body(response)
+				.success();
+	}
+
+
+	@PostMapping("/update/{id}")
+	public BaseResponse<RoleResponseVO> update(@PathVariable Long id, @RequestBody RoleUpdateRequestVO createRequestVO)
+			throws ServerException {
+		RoleDTO roleDTO = new RoleDTO();
+		RoleMapper.INSTANCE.copyUpdateRequestVoToDto(createRequestVO, roleDTO);
+		roleService.update(roleDTO, id);
+		RoleResponseVO response = new RoleResponseVO();
+		return new BaseResponse<RoleResponseVO>()
+				.body(response)
+				.success();
 	}
 
 	@GetMapping("/all-roles")

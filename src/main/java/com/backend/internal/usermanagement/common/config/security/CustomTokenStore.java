@@ -19,7 +19,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,7 +111,17 @@ public class CustomTokenStore implements TokenStore {
         crt.setTokenId(extractTokenKey(refreshToken.getValue()));
         crt.setToken(SerializableObjectConverter.serializeRefreshToken(refreshToken));
         crt.setAuthentication(authentication);
+        Date expiration = calculateExpirationDateForRefreshToken();
+        crt.setExpiredAt(expiration);
         cbRefreshTokenRepository.save(crt);
+    }
+
+    // Method to calculate the expiration time for the refresh token
+    private Date calculateExpirationDateForRefreshToken() {
+        // Example: Set the expiration time to 30 days from the current time
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 30); // 30 days from now
+        return calendar.getTime();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.backend.internal.usermanagement.entity.primary;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -19,6 +21,8 @@ public class RefreshTokenEntity extends BaseEntity<Long> {
     private String tokenId;
     private String token;
     private String authentication;
+    @Column(name = "expired_at")
+    private Date expiredAt;
 
     public OAuth2Authentication getAuthentication() {
         return SerializableObjectConverter.deserialize(authentication);

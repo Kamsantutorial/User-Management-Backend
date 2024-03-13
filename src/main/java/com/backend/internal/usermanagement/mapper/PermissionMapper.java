@@ -12,6 +12,7 @@ import com.backend.internal.usermanagement.dto.permission.PermissionDTO;
 import com.backend.internal.usermanagement.entity.primary.PermissionEntity;
 import com.backend.internal.usermanagement.vo.permission.request.PermissionCreateRequestVO;
 import com.backend.internal.usermanagement.vo.permission.request.PermissionRequestPageVO;
+import com.backend.internal.usermanagement.vo.permission.request.PermissionUpdateRequestVO;
 import com.backend.internal.usermanagement.vo.permission.response.PermissionResponseVO;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -37,6 +38,10 @@ public interface PermissionMapper {
         PermissionResponseVO map(PermissionEntity value);
 
         void copyCreateRequestVoToDto(PermissionCreateRequestVO vo, @MappingTarget PermissionDTO dto);
+
+
+        void copyUpdateRequestVoToDto(PermissionUpdateRequestVO vo, @MappingTarget PermissionDTO dto);
+
 
         void copyListEntityToResponseVo(List<PermissionEntity> permissions,
                         @MappingTarget List<PermissionResponseVO> responseVOs);

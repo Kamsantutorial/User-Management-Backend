@@ -150,6 +150,22 @@ public class BaseCriteria<R extends BaseRepository<?, ?>> {
         return this.addPredicate(predicate);
     }
 
+    public <V> Predicate equal(String column, Long value) {
+        Assert.notNull(column, COLUMN_NAME_MUST_NOT_BE_NULL);
+
+        if (Objects.isNull(value))
+            return null;
+        Join<?, ?> parent = this.getAllParent(column);
+        int lastIndex = column.split("\\.").length - 1;
+        if (Objects.nonNull(parent)) {
+            predicate = this.criteriaBuilder.equal(parent.get(column.split("\\.")[lastIndex]),
+                    value);
+        } else {
+            predicate = this.criteriaBuilder.equal(root.get(column), value);
+        }
+        return this.addPredicate(predicate);
+    }
+
     public Predicate equal(String column, Boolean value) {
         Assert.notNull(column, COLUMN_NAME_MUST_NOT_BE_NULL);
 

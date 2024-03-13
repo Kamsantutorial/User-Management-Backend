@@ -6,7 +6,6 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import com.backend.internal.usermanagement.common.enums.ErrorCode;
 import com.backend.internal.usermanagement.dto.base.RequestPageableDTO;
@@ -30,7 +29,7 @@ public class PermissionServiceImpl implements PermissionService {
 		criteria.or(criteria.or(criteria.like("permissionName", permissionDTO.getSearchKeyword()),
 				criteria.or(criteria.like("type", permissionDTO.getSearchKeyword()),
 						criteria.equal("id", permissionDTO.getSearchKeyword()))));
-		criteria.orderBy("type", Direction.DESC);
+		//criteria.orderBy("id", Direction.DESC);
 		criteria.size(pageableDTO.getSize());
 		criteria.setPage(pageableDTO.getPageOffset());
 
