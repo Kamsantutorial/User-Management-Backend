@@ -7,4 +7,5 @@ import com.backend.internal.usermanagement.service.base.BaseService;
 
 public interface UserService extends BaseService<UserDTO, RequestPageableDTO> {
 	UserEntity findByUsername(String username);
+	Long countUser();
 }

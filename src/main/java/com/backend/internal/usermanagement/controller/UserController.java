@@ -23,6 +23,7 @@ import com.backend.internal.usermanagement.service.primary.UserRoleService;
 import com.backend.internal.usermanagement.service.primary.UserService;
 import com.backend.internal.usermanagement.vo.BaseResponse;
 import com.backend.internal.usermanagement.vo.ResponsePageableVO;
+import com.backend.internal.usermanagement.vo.dashboard.ResponseDashboardVO;
 import com.backend.internal.usermanagement.vo.user.request.UserCreateRequestVO;
 import com.backend.internal.usermanagement.vo.user.request.UserRequestPageVO;
 import com.backend.internal.usermanagement.vo.user.request.UserUpdateRequestVO;
@@ -96,6 +97,15 @@ public class UserController {
 		userService.delete(id);
 		return new BaseResponse<Void>()
 				.body(null)
+				.success();
+	}
+
+	@GetMapping("/count")
+	public BaseResponse<ResponseDashboardVO> count()
+			throws ServerException {
+		Long total = userService.countUser();
+		return new BaseResponse<ResponseDashboardVO>()
+				.body(new ResponseDashboardVO(total))
 				.success();
 	}
 

@@ -152,4 +152,12 @@ public class UserServiceImpl implements UserService {
         UserMapper.INSTANCE.copyListEntityToListDto(users.getContent(), userDTOs);
         return new PageImpl<>(userDTOs, users.getPageable(), users.getTotalElements());
     }
+
+    @Override
+    public Long countUser() {
+        BaseCriteria<UserRepository> criteria = new BaseCriteria<>(userRepository);
+        criteria.equal("isActive", true);
+        criteria.distinct(true);
+        return Long.valueOf(userRepository.findAllWithCriteria(criteria).size());
+    }
 }
