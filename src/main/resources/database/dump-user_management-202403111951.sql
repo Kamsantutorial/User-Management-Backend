@@ -1,17 +1,3 @@
-CREATE TABLE public.branches (
-	id serial4 NOT NULL,
-	branch_name varchar(150) NOT NULL,
-	branch_code varchar(10) NULL,
-	is_active boolean NULL DEFAULT true,
-	created_at timestamp NULL,
-	created_by varchar(50) NULL,
-	updated_at timestamp NULL,
-	updated_by varchar(50) NULL,
-	is_deleted boolean NOT NULL DEFAULT false,
-	deleted_at timestamp NULL,
-	deleted_by varchar(50) NULL,
-	CONSTRAINT branches_pkey PRIMARY KEY (id)
-);
 
 CREATE TABLE public.menus (
 	id serial4 NOT NULL,
